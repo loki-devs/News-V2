@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="minimum_height_button">50dp</dimen>
+    <dimen name="toolbar_height">56dp</dimen>
+
+    <dimen name="default_stroke_small">1dp</dimen>
+    <dimen name="default_stroke">2dp</dimen>
+    <dimen name="default_stroke_large">3dp</dimen>
+
+    <dimen name="default_divider_size">1dp</dimen>
+    <dimen name="default_divider_size_large">2dp</dimen>
+
+    <dimen name="default_round_corner_small">2dp</dimen>
+    <dimen name="default_round_corner">4dp</dimen>
+    <dimen name="default_round_corner_large">8dp</dimen>
+    <dimen name="default_round_corner_large_x">16dp</dimen>
+    <dimen name="round_corner_large_xx">24dp</dimen>
+    <dimen name="round_corner_large_xxx">32dp</dimen>
+    <dimen name="round_corner_calendar">6dp</dimen>
+</resources>

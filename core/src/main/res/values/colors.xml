@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="gunmetal">#3e4957</color>
+    <color name="grapefruit">#f86464</color>
+    <color name="white">#FFFFFF</color>
+    <color name="greenishTeal">#2bc486</color>
+    <color name="greenyBlue">#40b295</color>
+    <color name="lightAqua">#83ffdf</color>
+    <color name="lightPeriwinkleTwo">#d8d8df</color>
+    <color name="grey80">#808d8daa</color>
+</resources>

@@ -1,0 +1,93 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdk 33
+
+    defaultConfig {
+        minSdk 21
+        targetSdk 33
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+ext {
+    archLifecycleVersion = '2.5.1'
+    constraintLayoutVersion = '2.1.4'
+    retrofitVersion = '2.9.0'
+    okHttpVersion = '4.9.2'
+    koinVersion = '3.2.1'
+    coroutinesVersion = '1.6.4'
+    shimmerVersion = '0.5.0'
+    androidxVersion = '1.9.0'
+    appCompatVersion = '1.5.1'
+    constraintLayoutVersion = '2.1.4'
+    googleMaterialVersion = '1.6.1'
+    junitVersion = '4.13.2'
+    roomVersion = '2.4.2'
+    swiperefreshlayoutVersion = '1.1.0'
+    coilVersion = '2.2.1'
+}
+
+dependencies {
+    api "androidx.core:core-ktx:$androidxVersion"
+    api "androidx.appcompat:appcompat:$appCompatVersion"
+    api "com.google.android.material:material:$googleMaterialVersion"
+    api "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
+
+    // arch component
+    api "androidx.lifecycle:lifecycle-livedata-ktx:$archLifecycleVersion"
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:$archLifecycleVersion"
+    api "androidx.lifecycle:lifecycle-runtime-ktx:$archLifecycleVersion"
+    kapt "androidx.lifecycle:lifecycle-common-java8:$archLifecycleVersion"
+
+    // retrofit
+    api "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    api "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    api "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
+
+    // koin
+    api "io.insert-koin:koin-android:$koinVersion"
+    testImplementation "io.insert-koin:koin-test-junit5:$koinVersion"
+
+    // coroutines
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
+
+    // custom view lib
+    api "com.facebook.shimmer:shimmer:$shimmerVersion"
+
+    // coil
+    implementation("io.coil-kt:coil:$coilVersion")
+
+    // unit test
+    testImplementation "junit:junit:$junitVersion"
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    testImplementation 'org.mockito:mockito-core:4.8.0'
+    testImplementation 'org.mockito:mockito-inline:4.8.0'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+
+    api "androidx.swiperefreshlayout:swiperefreshlayout:$swiperefreshlayoutVersion"
+}
