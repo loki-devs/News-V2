@@ -5,14 +5,18 @@ plugins {
 }
 
 android {
-    compileSdk 33
+    compileSdk 32
 
     defaultConfig {
         minSdk 21
-        targetSdk 33
+        targetSdk 32
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildFeatures {
+        viewBinding true
     }
 
     buildTypes {
@@ -41,7 +45,7 @@ ext {
     koinVersion = '3.2.1'
     coroutinesVersion = '1.6.4'
     shimmerVersion = '0.5.0'
-    androidxVersion = '1.9.0'
+    androidxVersion = '1.8.0'
     appCompatVersion = '1.5.1'
     constraintLayoutVersion = '2.1.4'
     googleMaterialVersion = '1.6.1'

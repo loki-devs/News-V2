@@ -13,7 +13,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
-const val API_KEY = "154d8ddc3f3a4e0f82bdb1b42b2f1917"
+const val API_KEY = "d6851a82fa6945f58b5631e81d8f1ab9"
 
 val coreNetworkModule = module {
     single { GsonBuilder().setLenient().create() }
@@ -37,9 +37,9 @@ val coreNetworkModule = module {
     }
 }
 
-inline fun <reified T> provideRetrofit(okHttpClient: OkHttpClient, gson: Gson, baseUrl: String): T {
+inline fun <reified T> provideRetrofit(okHttpClient: OkHttpClient, gson: Gson): T {
     val retrofit = Retrofit.Builder()
-        .baseUrl(baseUrl)
+        .baseUrl("https://newsapi.org/")
         .client(okHttpClient)
         .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
