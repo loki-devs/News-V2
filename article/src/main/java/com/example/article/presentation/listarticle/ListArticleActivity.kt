@@ -1,11 +1,13 @@
 package com.example.article.presentation.listarticle
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import com.example.article.common.FilterListener
 import com.example.article.databinding.ActivityListArticlesBinding
 import com.example.article.domain.model.ArticleData
+import com.example.article.presentation.detailarticle.DetailArticleActivity
 import com.example.core.ErrorCode
 import com.example.core.common.PaginationListener
 import com.example.core.common.VerticalItemSpaceDecoration
@@ -26,6 +28,8 @@ class ListArticleActivity: BaseActivity(), FilterListener {
     }
 
     private var keyword: String = ""
+    private var originalArticles = mutableListOf<ArticleData>()
+    private var filterArticles = mutableListOf<ArticleData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +60,11 @@ class ListArticleActivity: BaseActivity(), FilterListener {
     }
 
     private fun initListener() {
-        adapter.setFilterListeners(this)
+        adapter.setItemClickListener { _, articleData, _ ->
+            val intent = Intent(this, DetailArticleActivity::class.java)
+            intent.putExtra("EXTRA_URL", articleData?.url)
+            startActivityLeftTransition(intent)
+        }
         with(binding) {
             etSearch.afterTextChanged {
                 keyword = it
@@ -64,7 +72,12 @@ class ListArticleActivity: BaseActivity(), FilterListener {
                     true -> View.VISIBLE
                     else -> View.GONE
                 }
-                adapter.filter.filter(keyword)
+                if (keyword.isNotBlank()) {
+                    filterArticles = originalArticles.filter { filter -> filter.title.contains(keyword, true) }.toMutableList()
+                    adapter.resetData(filterArticles)
+                } else {
+                    adapter.resetData(originalArticles)
+                }
             }
             ibClear.setOnClickListener {
                 clearKeyword()
@@ -147,13 +160,17 @@ class ListArticleActivity: BaseActivity(), FilterListener {
 
     private fun bindView(data: List<ArticleData>, isLastPages: Boolean) {
         hideError()
+        originalArticles.clear()
+        originalArticles.addAll(data)
         paginationListener.apply {
             isLastPage = isLastPages
             itemCount = data.size
         }
-        adapter.resetData(data)
-        adapter.originalValues = data
-        adapter.filter.filter(keyword)
+        if (keyword.isNotBlank()) {
+            adapter.resetData(filterArticles)
+        } else {
+            adapter.resetData(data)
+        }
         if (isLastPages) adapter.hideLoadingFooter()
     }
 
@@ -163,7 +180,7 @@ class ListArticleActivity: BaseActivity(), FilterListener {
 
     private fun clearKeyword() {
         binding.etSearch.setText("")
-        adapter.filter.filter("")
+        adapter.resetData(originalArticles)
     }
 
     override fun filteringFinished(filteredItemsCount: Int) {

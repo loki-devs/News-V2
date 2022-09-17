@@ -8,5 +8,10 @@
             android:name=".presentation.listarticle.ListArticleActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Article" />
+
+        <activity
+            android:name=".presentation.detailarticle.DetailArticleActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Article" />
     </application>
 </manifest>
