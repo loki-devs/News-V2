@@ -42,4 +42,5 @@ android {
 dependencies {
     implementation project(path: ':core')
     implementation project(path: ':category')
+    implementation project(path: ':newssource')
 }

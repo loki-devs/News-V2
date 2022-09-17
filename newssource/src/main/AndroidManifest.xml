@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest package="com.example.newsource"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application>
+        <activity
+            android:name=".presentation.NewsSourceActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.NewsSource" />
+    </application>
+</manifest>

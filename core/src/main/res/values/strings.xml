@@ -1,6 +1,8 @@
 <resources>
-    <string name="core_generic_error_header">Sorry, it\'s not you, It\'s us.</string>
+    <string name="core_connection_error">Connection Error</string>
     <string name="core_generic_error">We\'re experiencing an internal server problem. Please try again later</string>
     <string name="core_retry">Try Again</string>
     <string name="core_load_more">Load More</string>
+    <string name="core_loading_progress">Your request is in progress.\nPlease wait&#8230;</string>
+    <string name="core_search_empty">Sorry, we couldn\'t find\nwhat you were looking for.</string>
 </resources>

@@ -1,11 +1,14 @@
 package com.example.category.presentation
 
+import android.content.Intent
 import android.os.Bundle
 import com.example.category.R
 import com.example.category.databinding.ActivityCategoryBinding
 import com.example.category.domain.model.CategoryData
+import com.example.core.common.extension.startActivityLeftTransition
 import com.example.core.common.extension.viewBinding
 import com.example.core.presentation.base.BaseActivity
+import com.example.newsource.presentation.NewsSourceActivity
 
 class CategoryActivity: BaseActivity() {
 
@@ -25,6 +28,11 @@ class CategoryActivity: BaseActivity() {
     private fun initView() {
         title = getString(R.string.category)
         binding.rvCategory.adapter = categoryAdapter
+        categoryAdapter.setItemClickListener { _, categoryData, _ ->
+            val intent = Intent(this, NewsSourceActivity::class.java)
+            intent.putExtra("CATEGORY_ID", categoryData?.id)
+            startActivityLeftTransition(intent)
+        }
     }
 
     private fun showData() {

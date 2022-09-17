@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="core_generic_error_header">Maaf ini bukan salah Anda</string>
+    <string name="core_connection_error">Error Koneksi</string>
     <string name="core_generic_error">Internal server kami mengalami masalah. Silahkan coba beberapa saat lagi</string>
     <string name="core_retry">Coba Lagi</string>
     <string name="core_load_more">Muat Lainnya</string>
+    <string name="core_loading_progress">Permintaan Anda sedang diproses.\nMohon tunggu…</string>
+    <string name="core_search_empty">Maaf, kami tidak menemukan\nyang Anda cari.</string>
 </resources>

@@ -6,6 +6,15 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.22056159420289856" />
         <entry key="category/src/main/res/layout/activity_category.xml" value="0.22056159420289856" />
         <entry key="category/src/main/res/layout/item_category.xml" value="0.375" />
+        <entry key="core/src/main/res/drawable/ghost_button.xml" value="0.222" />
+        <entry key="core/src/main/res/drawable/ic_no_wifi.xml" value="0.222" />
+        <entry key="core/src/main/res/drawable/icon_error.xml" value="0.222" />
+        <entry key="core/src/main/res/layout/view_error_handling.xml" value="0.22056159420289856" />
+        <entry key="core/src/main/res/layout/view_line_separator.xml" value="0.22056159420289856" />
+        <entry key="core/src/main/res/layout/view_loading.xml" value="0.375" />
+        <entry key="newsource/src/main/res/layout/item_category.xml" value="0.1" />
+        <entry key="newssource/src/main/res/layout/activity_news_source.xml" value="0.22056159420289856" />
+        <entry key="newssource/src/main/res/layout/item_news_source.xml" value="0.3707136237256719" />
       </map>
     </option>
   </component>
