@@ -13,7 +13,7 @@ class NewsSourceViewModel(private val newsSourceUseCase: NewsSourceUseCase) : Vi
 
     val newsSourceState = MutableLiveData<PaginationViewState<NewsSourceData>>()
 
-    private var page = 1
+    var page = 1
 
     private val limit = 20
 

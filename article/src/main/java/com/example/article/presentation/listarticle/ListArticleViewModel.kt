@@ -13,14 +13,14 @@ class ListArticleViewModel(private val articleUseCase: ArticleUseCase): ViewMode
 
     val articleState = MutableLiveData<PaginationViewState<ArticleData>>()
 
-    private var page = 1
+    var page = 1
 
     private val limit = 20
 
-    fun getArticleBySource(sourceId: String) {
+    fun getArticleBySource(sourceName: String) {
         articleState.postValue(if (page > 1) PaginationViewState.LoadMoreLoading() else PaginationViewState.Loading())
         viewModelScope.launch {
-            articleUseCase.invoke(ArticleParam(sourceId, page))
+            articleUseCase.invoke(ArticleParam(sourceName, page))
                 .handleResult({
                     if (page == 1 && it.isEmpty()) {
                         articleState.postValue(PaginationViewState.EmptyData())

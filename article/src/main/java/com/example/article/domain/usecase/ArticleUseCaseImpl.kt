@@ -33,7 +33,7 @@ class ArticleUseCaseImpl(private val articleDataSource: ArticleDataSource) : Art
                         author,
                         title,
                         description,
-                        urlToImage,
+                        url,
                         urlToImage,
                         publishedAt,
                         content
