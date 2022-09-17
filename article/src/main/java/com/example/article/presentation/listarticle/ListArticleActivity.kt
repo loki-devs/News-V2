@@ -1,61 +1,79 @@
-package com.example.newsource.presentation
+package com.example.article.presentation.listarticle
 
-import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
-import com.example.article.presentation.listarticle.ListArticleActivity
+import com.example.article.common.FilterListener
+import com.example.article.databinding.ActivityListArticlesBinding
+import com.example.article.domain.model.ArticleData
 import com.example.core.ErrorCode
 import com.example.core.common.PaginationListener
+import com.example.core.common.VerticalItemSpaceDecoration
 import com.example.core.common.extension.*
 import com.example.core.presentation.base.BaseActivity
 import com.example.core.presentation.viewstate.PaginationViewState
-import com.example.newsource.R
-import com.example.newsource.databinding.ActivityNewsSourceBinding
-import com.example.newsource.domain.model.NewsSourceData
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class NewsSourceActivity : BaseActivity() {
+class ListArticleActivity: BaseActivity(), FilterListener {
 
-    private val categoryId: String
-        get() = intent?.extras?.getString("CATEGORY_ID", "").toString()
-    private val binding by viewBinding(ActivityNewsSourceBinding::inflate)
-    private val viewModel by viewModel<NewsSourceViewModel>()
-    private val adapter by lazy { NewsSourceAdapter() }
+    private val sourceId: String
+        get() = intent?.extras?.getString("SOURCE_ID", "").toString()
+    private val binding by viewBinding(ActivityListArticlesBinding::inflate)
+    private val viewModel by viewModel<ListArticleViewModel>()
+    private val adapter by lazy { ListArticleAdapter() }
     private val paginationListener by lazy {
-        PaginationListener { viewModel.getNewsSourceByCategory(categoryId) }
+        PaginationListener { viewModel.getArticleBySource(sourceId) }
     }
+
+    private var keyword: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         initView()
+        initListener()
         startObservingData()
-        viewModel.getNewsSourceByCategory(categoryId)
+        viewModel.getArticleBySource(sourceId)
     }
 
     private fun initView() {
-        title = getString(R.string.news_source)
-        adapter.setItemClickListener { _, newsSourceData, _ ->
-            val intent = Intent(this, ListArticleActivity::class.java)
-            intent.putExtra("SOURCE_ID", newsSourceData?.name)
-            startActivityLeftTransition(intent)
-        }
+        title = getString(com.example.article.R.string.article)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         with(binding) {
-            rvNewsSource.adapter = adapter
-            rvNewsSource.addOnScrollListener(paginationListener)
+            rvArticles.adapter = adapter
+            rvArticles.addOnScrollListener(paginationListener)
+            rvArticles.addItemDecoration(VerticalItemSpaceDecoration(resources.getDimensionPixelSize(
+                com.example.core.R.dimen.spacing_x)))
             srlRefresh.apply {
                 setOnRefreshListener {
                     isRefreshing = false
                     adapter.clear()
                     viewModel.resetPage()
-                    viewModel.getNewsSourceByCategory(categoryId)
+                    viewModel.getArticleBySource(sourceId)
                 }
             }
         }
     }
 
+    private fun initListener() {
+        adapter.setFilterListeners(this)
+        with(binding) {
+            etSearch.afterTextChanged {
+                keyword = it
+                binding.ibClear.visibility = when (keyword.isNotBlank()) {
+                    true -> View.VISIBLE
+                    else -> View.GONE
+                }
+                adapter.filter.filter(keyword)
+            }
+            ibClear.setOnClickListener {
+                clearKeyword()
+            }
+        }
+    }
+
     private fun startObservingData() {
-        viewModel.newsSourceState.observe(this) { state ->
+        viewModel.articleState.observe(this) { state ->
             when (state) {
                 is PaginationViewState.Loading -> {
                     hideError()
@@ -69,11 +87,7 @@ class NewsSourceActivity : BaseActivity() {
                     hidePaginationLoading()
                     when (state) {
                         is PaginationViewState.Success -> bindView(state.data, state.isLastPage)
-                        is PaginationViewState.Error -> showError(state.viewError?.errorCode.toString()) {
-                            viewModel.getNewsSourceByCategory(
-                                categoryId
-                            )
-                        }
+                        is PaginationViewState.Error -> showError(state.viewError?.errorCode.toString()) { viewModel.getArticleBySource(sourceId) }
                         is PaginationViewState.EmptyData -> showEmpty()
                         else -> showErrorToast()
                     }
@@ -102,17 +116,15 @@ class NewsSourceActivity : BaseActivity() {
 
     private fun showError(errorCode: String, action: () -> Unit) {
         binding.srlRefresh.gone()
-        when (errorCode) {
+        when(errorCode) {
             ErrorCode.GLOBAL_INTERNET_ERROR -> {
-                binding.viewErrorHandling.tvErrorMessage.text =
-                    getString(com.example.core.R.string.core_connection_error)
+                binding.viewErrorHandling.tvErrorMessage.text = getString(com.example.core.R.string.core_connection_error)
                 binding.viewErrorHandling.ivError.setImageResource(com.example.core.R.drawable.ic_no_wifi)
             }
 
             else -> {
                 binding.viewErrorHandling.ivError.setImageResource(com.example.core.R.drawable.icon_error)
-                binding.viewErrorHandling.tvErrorMessage.text =
-                    getString(com.example.core.R.string.core_generic_error)
+                binding.viewErrorHandling.tvErrorMessage.text = getString(com.example.core.R.string.core_generic_error)
             }
         }
         binding.viewErrorHandling.btnRetry.visible()
@@ -122,8 +134,7 @@ class NewsSourceActivity : BaseActivity() {
 
     private fun showEmpty() {
         binding.srlRefresh.gone()
-        binding.viewErrorHandling.tvErrorMessage.text =
-            getString(com.example.core.R.string.core_search_empty)
+        binding.viewErrorHandling.tvErrorMessage.text = getString(com.example.core.R.string.core_search_empty)
         binding.viewErrorHandling.ivError.setImageResource(com.example.core.R.drawable.icon_no_data)
         binding.viewErrorHandling.btnRetry.gone()
         binding.viewErrorHandling.llErrorHandling.visible()
@@ -134,17 +145,28 @@ class NewsSourceActivity : BaseActivity() {
         binding.viewErrorHandling.llErrorHandling.gone()
     }
 
-    private fun bindView(data: List<NewsSourceData>, isLastPages: Boolean) {
+    private fun bindView(data: List<ArticleData>, isLastPages: Boolean) {
         hideError()
         paginationListener.apply {
             isLastPage = isLastPages
             itemCount = data.size
         }
         adapter.resetData(data)
+        adapter.originalValues = data
+        adapter.filter.filter(keyword)
         if (isLastPages) adapter.hideLoadingFooter()
     }
 
     private fun showErrorToast() {
         Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun clearKeyword() {
+        binding.etSearch.setText("")
+        adapter.filter.filter("")
+    }
+
+    override fun filteringFinished(filteredItemsCount: Int) {
+        if (filteredItemsCount == 0) showEmpty() else hideError()
     }
 }

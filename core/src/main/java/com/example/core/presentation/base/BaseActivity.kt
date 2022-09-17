@@ -3,6 +3,8 @@ package com.example.core.presentation.base
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.example.core.common.extension.slideInLeftTransition
+import com.example.core.common.extension.slideInRightTransition
 
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -31,4 +33,8 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        slideInRightTransition()
+    }
 }

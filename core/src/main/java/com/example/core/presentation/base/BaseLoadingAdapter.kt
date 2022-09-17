@@ -63,7 +63,7 @@ abstract class BaseLoadingAdapter<T> : BaseAdapter<T, BaseHolder<T>>() {
         notifyItemChanged(itemCount - 1)
     }
 
-    open fun setPaginationData(dataAfterAdded: List<T?>) {
+    open fun setPaginationData(dataAfterAdded: List<T>) {
         val indexBefore = itemCount - 1
         list.addAll(dataAfterAdded)
         notifyItemRangeInserted(indexBefore, dataAfterAdded.size)

@@ -1,6 +1,10 @@
 package com.example.news
 
 import android.app.Application
+import com.example.article.di.articleNetworkModule
+import com.example.article.di.articleRepositoryModule
+import com.example.article.di.articleUseCaseModule
+import com.example.article.di.articleViewModelModule
 import com.example.core.di.coreNetworkModule
 import com.example.newsource.di.newsSourceNetworkModule
 import com.example.newsource.di.newsSourceRepositoryModule
@@ -9,7 +13,7 @@ import com.example.newsource.di.newsSourceViewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
-class NewsApplication: Application() {
+class NewsApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -21,7 +25,15 @@ class NewsApplication: Application() {
             androidContext(this@NewsApplication)
             modules(
                 arrayListOf(
-                    coreNetworkModule, newsSourceNetworkModule, newsSourceRepositoryModule, newsSourceUseCaseModule, newsSourceViewModelModule
+                    coreNetworkModule,
+                    newsSourceNetworkModule,
+                    newsSourceRepositoryModule,
+                    newsSourceUseCaseModule,
+                    newsSourceViewModelModule,
+                    articleViewModelModule,
+                    articleNetworkModule,
+                    articleRepositoryModule,
+                    articleUseCaseModule
                 )
             )
         }

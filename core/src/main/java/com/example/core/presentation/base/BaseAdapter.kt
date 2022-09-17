@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class BaseAdapter<S, T : BaseHolder<S>> : RecyclerView.Adapter<T>() {
     var listener: (position: Int, S?, viewId: Int) -> Unit = { _, _, _ -> }
     var imageClickListener: (position: Int, S, view: View) -> Unit = { _, _, _ -> }
-    var list: ArrayList<S?> = ArrayList()
+    var list: ArrayList<S> = ArrayList()
 
     fun setItemClickListener(listener: (position: Int, S?, viewId: Int) -> Unit = { _, _, _ -> }) {
         this.listener = listener
